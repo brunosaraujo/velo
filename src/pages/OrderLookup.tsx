@@ -84,10 +84,9 @@ const OrderLookup = () => {
             <form onSubmit={handleSearch} className="space-y-4">
               <div>
                 <Label htmlFor="order-id">Número do Pedido</Label>
-                <Input
-                  id="order-id"
-                  data-testid="search-order-id"
+                <Input                  
                   type="text"
+                  id="order-id"
                   placeholder="Ex: VLO-ABC123"
                   value={orderId}
                   onChange={(e) => setOrderId(e.target.value)}

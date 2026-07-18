@@ -14,13 +14,15 @@ test('deve consultar um pedido aprovado', async ({ page }) => {
 
   // Act
   //Checkpoint 3: Preencher o campo de busca com o ID do pedido
-  await page.getByTestId('search-order-id').fill('VLO-8AH4U5')
+  //await page.getByRole('textbox', { name: 'Número do Pedido' }).fill('VLO-8AH4U5')
+  //await page.getByLabel('Número do Pedido').fill('VLO-8AH4U5')
+  await page.getByPlaceholder('Ex: VLO-ABC123').fill('VLO-8AH4U5')
   await page.getByTestId('search-order-button').click()
   
   // Assert
   await expect(page.getByTestId('order-result-id')).toBeVisible()
   await expect(page.getByTestId('order-result-id')).toContainText('VLO-8AH4U5')
-  
+
   await expect(page.getByTestId('order-result-status')).toBeVisible()
   await expect(page.getByTestId('order-result-status')).toContainText('APROVADO')
 })
