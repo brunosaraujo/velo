@@ -4,6 +4,10 @@ import { test, expect } from '@playwright/test'
 /// PAV - Preparar, Agir, Verificar
 
 test('deve consultar um pedido aprovado', async ({ page }) => {
+
+  const order = 'VLO-8AH4U5'
+
+
   // Arrange
   await page.goto('http://localhost:5173/')
   // Checkpoint 1: Verificar se o texto "Velô Sprint" está presente na página
@@ -16,7 +20,7 @@ test('deve consultar um pedido aprovado', async ({ page }) => {
   //Checkpoint 3: Preencher o campo de busca com o ID do pedido
   //await page.getByRole('textbox', { name: 'Número do Pedido' }).fill('VLO-8AH4U5')
   //await page.getByLabel('Número do Pedido').fill('VLO-8AH4U5')
-  await page.getByPlaceholder('Ex: VLO-ABC123').fill('VLO-8AH4U5')
+  await page.getByPlaceholder('Ex: VLO-ABC123').fill(order)
   //await page.getByTestId('search-order-button').click()
   await page.getByRole('button', { name: 'Buscar Pedido' }).click()
 
@@ -29,16 +33,16 @@ test('deve consultar um pedido aprovado', async ({ page }) => {
   // xpath puro
   const orderCode = page.locator('//p[text()="Pedido"]/..//p[text()="VLO-8AH4U5"]')
 
-  await expect(page.getByText('VLO-8AH4U5')).toBeVisible({ timeout: 10_000 })
+  await expect(page.getByText(order)).toBeVisible({ timeout: 10_000 })
   await expect(orderCode).toBeVisible({ timeout: 10_000 })
-  await expect(page.locator('#root')).toContainText('VLO-8AH4U5')
+  await expect(page.locator('#root')).toContainText(order)
 
   const containerPedido = page.getByRole('paragraph')
   // Expressão regular para pegar iniciando com pedido e terminando com pedido  
   .filter({ hasText: /^Pedido$/ })
     .locator('..')
 
-  await expect(containerPedido).toContainText('VLO-8AH4U5', { timeout: 10_000 })
+  await expect(containerPedido).toContainText(order, { timeout: 10_000 })
 
 
   // await expect(page.getByTestId('order-result-status')).toBeVisible()
