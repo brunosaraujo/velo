@@ -7,7 +7,6 @@ test('deve consultar um pedido aprovado', async ({ page }) => {
 
   const order = 'VLO-8AH4U5'
 
-
   // Arrange
   await page.goto('http://localhost:5173/')
   // Checkpoint 1: Verificar se o texto "Velô Sprint" está presente na página
@@ -38,8 +37,8 @@ test('deve consultar um pedido aprovado', async ({ page }) => {
   await expect(page.locator('#root')).toContainText(order)
 
   const containerPedido = page.getByRole('paragraph')
-  // Expressão regular para pegar iniciando com pedido e terminando com pedido  
-  .filter({ hasText: /^Pedido$/ })
+    // Expressão regular para pegar iniciando com pedido e terminando com pedido  
+    .filter({ hasText: /^Pedido$/ })
     .locator('..')
 
   await expect(containerPedido).toContainText(order, { timeout: 10_000 })
@@ -52,4 +51,36 @@ test('deve consultar um pedido aprovado', async ({ page }) => {
 
   await expect(page.getByText('APROVADO')).toBeVisible({ timeout: 10_000 })
   await expect(page.locator('#root')).toContainText('APROVADO')
+})
+
+test('deve exibir mensagem quando o pedido não é encontrato', async ({ page }) => {
+
+  const order = 'VLO-ABC123'
+
+  // Arrange
+  await page.goto('http://localhost:5173/')
+  await expect(page.getByTestId('hero-section').getByRole('heading')).toContainText('Velô Sprint')
+
+  await page.getByRole('link', { name: 'Consultar Pedido' }).click()
+  await expect(page.getByRole('heading')).toContainText('Consultar Pedido')
+
+  await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(order)
+  await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+
+  // await expect(page.locator('#root')).toContainText('Pedido não encontrado')
+  // await expect(page.locator('#root')).toContainText('Verifique o número do pedido e tente novamente')
+
+  // const title = page.getByRole('heading', { name: 'Pedido não encontrado' })
+  // await expect(title).toBeVisible()
+
+  // //const message = page.getByText('Verifique o número do pedido e tente novamente')
+  // //const message = page.locator('//p[text()= "Verifique o número do pedido e tente novamente"]')
+  // const message = page.locator('p', { hasText: 'Verifique o número do pedido e tente novamente' })
+  // await expect(message).toBeVisible()
+
+  await expect(page.locator('#root')).toMatchAriaSnapshot(`
+    - img
+    - heading "Pedido não encontrado" [level=3]
+    - paragraph: Verifique o número do pedido e tente novamente
+    `)
 })
