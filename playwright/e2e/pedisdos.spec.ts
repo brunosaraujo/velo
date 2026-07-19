@@ -1,8 +1,23 @@
 import { test, expect } from '@playwright/test'
 
 /// AAA - Arrange, Act, Assert
-/// PAV - Preparar, Agir, Verificar
+/// PAV - Preparar, Agir, Verificar 
 
+function gerarCodigoPedido() {
+  const prefixo = 'VLO';
+  
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let randomPart = '';
+
+  for (let i = 0; i < 6; i++){
+    const randomIndex = Math.floor(Math.random() * chars.length)
+    randomPart += chars[randomIndex]
+  }
+  
+  return `${prefixo}-${randomPart}`;
+}
+
+ 
 test('deve consultar um pedido aprovado', async ({ page }) => {
 
   const order = 'VLO-8AH4U5'
@@ -55,7 +70,7 @@ test('deve consultar um pedido aprovado', async ({ page }) => {
 
 test('deve exibir mensagem quando o pedido não é encontrato', async ({ page }) => {
 
-  const order = 'VLO-ABC123'
+  const order = gerarCodigoPedido()
 
   // Arrange
   await page.goto('http://localhost:5173/')
