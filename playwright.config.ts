@@ -38,7 +38,7 @@ export default defineConfig({
     // baseURL: 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'on',
 
     // Por padrão tanto o actionTimeout e o navigationTimeout vem zerados. Eles herdam esse tempo de timeout
     // Tempo máximo para ações interativas como clik(), fill(), ...

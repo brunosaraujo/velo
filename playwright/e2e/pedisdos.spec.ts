@@ -34,13 +34,25 @@ test.describe('Consulta de Pedido', () => {
 
   test('deve consultar um pedido aprovado', async ({ page }) => {
 
-    const order = 'VLO-8AH4U5'
+    //const order = 'VLO-8AH4U5'
+
+    const order = {
+      number: 'VLO-8AH4U5',
+      color: 'Midnight Black',
+      wheels: 'aero Wheels',
+      customer: {
+        name: 'Bruno Araujo',
+        email: 'brunosisag@gmail.com'
+      },
+      payment: 'À Vista',
+      status: 'APROVADO'
+    }
 
     // Act
     //Checkpoint 3: Preencher o campo de busca com o ID do pedido
     //await page.getByRole('textbox', { name: 'Número do Pedido' }).fill('VLO-8AH4U5')
     //await page.getByLabel('Número do Pedido').fill('VLO-8AH4U5')
-    await page.getByPlaceholder('Ex: VLO-ABC123').fill(order)
+    await page.getByPlaceholder('Ex: VLO-ABC123').fill(order.number)
     //await page.getByTestId('search-order-button').click()
     await page.getByRole('button', { name: 'Buscar Pedido' }).click()
 
@@ -73,32 +85,83 @@ test.describe('Consulta de Pedido', () => {
     // await expect(page.getByText('APROVADO')).toBeVisible({ timeout: 10_000 })
     // await expect(page.locator('#root')).toContainText('APROVADO')
 
-    await expect(page.getByTestId(`order-result-${order}`)).toMatchAriaSnapshot(`
+    await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
       - img
       - paragraph: Pedido
-      - paragraph: ${order}
+      - paragraph: ${order.number}
       - img
-      - text: APROVADO
+      - text: ${order.status}
       - img "Velô Sprint"
       - paragraph: Modelo
       - paragraph: Velô Sprint
       - paragraph: Cor
-      - paragraph: Midnight Black
+      - paragraph: ${order.color}
       - paragraph: Interior
       - paragraph: cream
       - paragraph: Rodas
-      - paragraph: aero Wheels
+      - paragraph: ${order.wheels}
       - heading "Dados do Cliente" [level=4]
       - paragraph: Nome
-      - paragraph: Bruno Araujo
+      - paragraph: ${order.customer.name}
       - paragraph: Email
-      - paragraph: brunosisag@gmail.com
+      - paragraph: ${order.customer.email}
       - paragraph: Loja de Retirada
       - paragraph
       - paragraph: Data do Pedido
       - paragraph: /\\d+\\/\\d+\\/\\d+/
       - heading "Pagamento" [level=4]
-      - paragraph: À Vista
+      - paragraph: ${order.payment}
+      - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
+      `)
+  })
+
+  test('deve consultar um pedido reprovado', async ({ page }) => {
+
+    // Test Data
+    // const order = 'VLO-5E12TG'
+
+    const order = {
+      number: 'VLO-5E12TG',
+      color: 'Midnight Black',
+      wheels: 'sport Wheels',
+      customer: {
+        name: 'Steve Jobs',
+        email: 'jobs@apple.com'
+      },
+      payment: 'À Vista',
+      status: 'REPROVADO'
+    }
+
+    await page.getByPlaceholder('Ex: VLO-ABC123').fill(order.number)
+    //await page.getByTestId('search-order-button').click()
+    await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+
+    await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
+      - img
+      - paragraph: Pedido
+      - paragraph: ${order.number}
+      - img
+      - text: ${order.status}
+      - img "Velô Sprint"
+      - paragraph: Modelo
+      - paragraph: Velô Sprint
+      - paragraph: Cor
+      - paragraph: ${order.color}
+      - paragraph: Interior
+      - paragraph: cream
+      - paragraph: Rodas
+      - paragraph: ${order.wheels}
+      - heading "Dados do Cliente" [level=4]
+      - paragraph: Nome
+      - paragraph: ${order.customer.name}
+      - paragraph: Email
+      - paragraph: ${order.customer.email}
+      - paragraph: Loja de Retirada
+      - paragraph
+      - paragraph: Data do Pedido
+      - paragraph: /\\d+\\/\\d+\\/\\d+/
+      - heading "Pagamento" [level=4]
+      - paragraph: ${order.payment}
       - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
       `)
   })
