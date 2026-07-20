@@ -1,4 +1,4 @@
-export function gerarCodigoPedido() {
+export function generateOrderCode() {
     const prefixo = 'VLO';
     
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
