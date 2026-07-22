@@ -13,17 +13,17 @@ export class OrderLockupPage {
   async validateStatusBadge(status: OrderStatus){
     const statusClasses = {
       APROVADO: {
-        backgroung: 'bg-green-100',
+        background: 'bg-green-100',
         text: 'text-green-700',
         icon: 'lucide-circle-check-big',
       },
       REPROVADO: {
-        backgroung: 'bg-red-100',
+        background: 'bg-red-100',
         text: 'text-red-700',
         icon: 'lucide-circle-x',
       },
       EM_ANALISE: {
-        backgroung: 'bg-amber-100',
+        background: 'bg-amber-100',
         text: 'text-amber-700',
         icon: 'lucide-clock',
       }
@@ -32,7 +32,7 @@ export class OrderLockupPage {
     const classes = statusClasses[status]
     const statusBadge = this.page.getByRole('status').filter({hasText: status})
 
-    await expect(statusBadge).toHaveClass(new RegExp(classes.backgroung))
+    await expect(statusBadge).toHaveClass(new RegExp(classes.background))
     await expect(statusBadge).toHaveClass(new RegExp(classes.text)) 
     await expect(statusBadge.locator('svg')).toHaveClass(new RegExp(classes.icon))
   }
